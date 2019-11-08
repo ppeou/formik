@@ -21,7 +21,9 @@ const GenericInput = ({type, index, ...prop}) => {
     setFieldValue(field, _value, false);
   };
   const _prop = {};
-  if(validatorName) _prop.validate = validators[validatorName];
+  if(validatorName) {
+    _prop.validate = validators[validatorName];
+  }
   return (<Field key={index} id={field} name={field} type={type} value={value}
                  onChange={onChange} {..._prop} />);
 };

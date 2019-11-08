@@ -15,7 +15,7 @@ const layout = {
     },
     {
       comp_name: 'NumberInput',
-      meta_data: {field: 'age'},
+      meta_data: {field: 'age',  validatorName:'validateAge'},
     },
     {
       comp_name: 'DateInput',
@@ -30,19 +30,23 @@ let data = {
 };
 
 function App() {
+  const onSaveClick = (errors) => {
+    console.log(errors);
+  };
   return (
     <div>
       <h1>My Form</h1>
-      <Formik
-        initialValues={data}
-      >
+      <Formik initialValues={data}>
         {props => (<>
           <Components {...layout}
                       validators={validators}
                       value={props.values}
                       setFieldValue={props.setFieldValue} />
-          {props.errors.name && <div id="feedback">{props.errors.name}</div>}
-          <button type="submit">Submit</button>
+          {Object.keys(props.errors).map(k => (<div id="feedback">{props.errors[k]}</div>))}
+          <button type="submit" disabled={Object.keys(props.errors).length > 0}
+                  onClick={() => props.validateForm().then(onSaveClick)}>
+            Submit
+          </button>
         </>)}
       </Formik>
     </div>
